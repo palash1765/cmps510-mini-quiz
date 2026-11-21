@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f9f8f3">
+  <title>Mini Quiz · CMPS 510</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./questions.js"></script>
+  <script defer src="./quiz.js"></script>
+</head>
+<body>
+  <header><div class="bar"><span class="brand"><span class="mark" aria-hidden="true"></span>Mini Quiz</span><span class="course">CMPS 510 <span>/</span> Final project</span></div></header>
+  <main>
+    <section id="landing" aria-labelledby="title">
+      <div class="cover">
+        <div class="intro"><h1 id="title" tabindex="-1">Mini Quiz<span>.</span></h1>
+          <p>Pick a subject and put your knowledge to the test, five questions at a time.</p>
+        </div>
+        <div class="illustration" aria-hidden="true"><div class="card-back"></div><div class="sheet"><b>Q.</b><i></i><i></i><i></i></div></div>
+      </div>
+      <div class="section-title"><h2>Choose a category</h2><span class="rule"></span></div>
+      <div class="categories">
+        <article class="category academic"><div class="card-meta"><span class="subject-icon book" aria-hidden="true"></span><span>5 questions</span></div>
+          <h3>Academic</h3><p>Review secure design and software maintenance from CMPS 510.</p>
+          <button data-category="academic" aria-label="Start Academic quiz">Start quiz</button>
+        </article>
+        <article class="category general"><div class="card-meta"><span class="subject-icon globe" aria-hidden="true"></span><span>5 questions</span></div>
+          <h3>General Knowledge</h3><p>Explore a mix of geography, science, music, and everyday facts.</p>
+          <button data-category="general" aria-label="Start General Knowledge quiz">Start quiz</button>
+        </article>
+      </div>
+      <noscript><p>Please enable JavaScript in your browser to play the quiz.</p></noscript>
+    </section>
+    <section id="round" class="panel" aria-labelledby="prompt" hidden>
+      <div class="round-meta"><span id="category-name"></span><span id="score"></span></div>
+      <progress id="progress" aria-label="Questions answered"></progress>
+      <p class="eyebrow" id="position"></p><h1 id="prompt" tabindex="-1"></h1>
+      <div id="answers" class="answers"></div>
+      <p id="feedback" role="status" aria-atomic="true"></p><button id="next" hidden>Next question</button>
+    </section>
+    <section id="result" class="panel" aria-labelledby="result-title" hidden>
+      <p id="result-category" class="eyebrow"></p><h1 id="result-title" tabindex="-1">Quiz complete.</h1>
+      <p class="score-label">Your final score</p><p id="total"></p>
+      <div class="actions"><button id="retry">Try Again</button><button id="choose" class="secondary">Choose a category</button></div>
+    </section>
+  </main>
+  <footer>CMPS 510 <span>·</span> Principles and Concepts of Software Engineering</footer>
+</body>
+</html>
