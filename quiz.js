@@ -3,12 +3,14 @@
 const byId = (id) => document.getElementById(id);
 const screens = ["landing", "round", "result"];
 const roundSize = 5;
+const hintsPerRound = 2;
 const historyInMemory = new Map();
 let roundQuestions;
 let category;
 let index;
 let score;
 let answered;
+let hintsLeft;
 
 function showScreen(active) {
   for (const id of screens) byId(id).hidden = id !== active;
@@ -58,6 +60,7 @@ function drawRound(category) {
 function startRound(selected) {
   category = selected;
   roundQuestions = drawRound(category);
+  hintsLeft = hintsPerRound;
   index = 0;
   score = 0;
   showScreen("round");
@@ -74,6 +77,9 @@ function showQuestion() {
   byId("position").textContent = `Question ${index + 1} of ${count}`;
   byId("score").textContent = `Score · ${score} / ${count}`;
   byId("prompt").textContent = question.prompt;
+  byId("clue").textContent = "";
+  byId("hint-count").textContent = `Hints left: ${hintsLeft}`;
+  byId("hint-button").disabled = hintsLeft === 0;
   byId("answers").replaceChildren();
   byId("feedback").replaceChildren();
   byId("next").hidden = true;
@@ -91,9 +97,18 @@ function showQuestion() {
   byId("prompt").focus();
 }
 
+byId("hint-button").addEventListener("click", () => {
+  if (byId("hint-button").disabled) return;
+  hintsLeft -= 1;
+  byId("hint-button").disabled = true;
+  byId("hint-count").textContent = `Hints left: ${hintsLeft}`;
+  byId("clue").textContent = `Hint: ${roundQuestions[index].hint}`;
+});
+
 function checkAnswer(selected) {
   if (answered) return;
   answered = true;
+  byId("hint-button").disabled = true;
   const question = roundQuestions[index];
   const right = selected === question.correct;
   if (right) score += 1;
@@ -151,6 +166,7 @@ byId("retry").addEventListener("click", () => startRound(category));
 
 function returnToCategories() {
   roundQuestions = [];
+  hintsLeft = hintsPerRound;
   category = null;
   index = 0;
   score = 0;

@@ -34,16 +34,24 @@
       <noscript><p>Please enable JavaScript in your browser to play the quiz.</p></noscript>
     </section>
     <section id="round" class="panel" aria-labelledby="prompt" hidden>
-      <div class="round-meta"><span id="category-name"></span><span id="score"></span></div>
-      <p class="eyebrow" id="position"></p>
+      <div class="round-meta">
+        <span id="category-name"></span>
+        <span id="score"></span>
+        <button class="header-button" id="exit-round" aria-haspopup="dialog">Exit Quiz</button>
+      </div>
+      <div class="question-tools">
+        <p id="position" class="eyebrow"></p>
+        <div class="hint-tools">
+          <span id="hint-count">Hints left: 2</span>
+          <button class="header-button" id="hint-button" aria-controls="clue" aria-describedby="hint-count">Hint</button>
+        </div>
+      </div>
       <progress id="progress" aria-label="Questions answered"></progress>
       <h1 id="prompt" tabindex="-1"></h1>
+      <p id="clue" role="status" aria-atomic="true"></p>
       <div id="answers" class="answers"></div>
       <p id="feedback" role="status" aria-atomic="true"></p>
-      <div class="round-actions">
-        <button id="next" hidden>Next Question</button>
-        <button id="exit-round" aria-haspopup="dialog">Exit Quiz</button>
-      </div>
+      <button id="next" hidden>Next Question</button>
       <dialog id="exit-dialog" aria-labelledby="exit-title" aria-describedby="exit-message">
         <h2 id="exit-title">Exit this quiz?</h2>
         <p id="exit-message">Your current progress will be lost.</p>
