@@ -31,7 +31,7 @@ function showQuestion() {
   byId("score").textContent = `Score · ${score} / ${count}`;
   byId("prompt").textContent = question.prompt;
   byId("answers").replaceChildren();
-  byId("feedback").textContent = "";
+  byId("feedback").replaceChildren();
   byId("next").hidden = true;
 
   question.choices.forEach((choice, position) => {
@@ -55,16 +55,21 @@ function checkAnswer(selected) {
   if (right) score += 1;
 
   const buttons = byId("answers").children;
-  for (const button of buttons) button.setAttribute("aria-disabled", "true");
+  for (const button of buttons) {
+    button.setAttribute("aria-disabled", "true");
+    button.tabIndex = -1;
+  }
   buttons[question.correct].classList.add("right");
   if (!right) buttons[selected].classList.add("wrong");
-  const verdict = right ? "Correct!" : `Incorrect. The correct answer is ${question.choices[question.correct]}.`;
-  byId("feedback").textContent = `${verdict} ${question.explanation}`;
+  buttons[question.correct].querySelector(".letter").textContent = "✓";
+  if (!right) buttons[selected].querySelector(".letter").textContent = "×";
+  const verdict = document.createElement("strong");
+  verdict.textContent = right ? "Correct!" : `Incorrect. The answer is ${question.choices[question.correct]}.`;
+  byId("feedback").replaceChildren(verdict, document.createTextNode(question.explanation));
   byId("progress").value = index + 1;
   byId("score").textContent = `Score · ${score} / ${category.questions.length}`;
-  byId("next").textContent = index + 1 === category.questions.length ? "See final score" : "Next question";
+  byId("next").textContent = index + 1 === category.questions.length ? "See Final Score" : "Next Question";
   byId("next").hidden = false;
-  for (const button of buttons) button.tabIndex = -1;
 }
 
 byId("next").addEventListener("click", () => {
@@ -74,11 +79,26 @@ byId("next").addEventListener("click", () => {
     showQuestion();
     return;
   }
+  showResult();
+});
+
+function showResult() {
+  const count = category.questions.length;
+  const percentage = Math.round(score / count * 100);
+  let message = "Give it another go and see which explanations stuck.";
+  if (score === count) {
+    message = "A clean sweep! Try the other category for a new challenge.";
+  } else if (percentage >= 60) {
+    message = "You got more than half right. Try again to catch the ones you missed.";
+  }
   byId("result-category").textContent = category.name;
-  byId("total").textContent = `${score} / ${category.questions.length}`;
+  byId("total").textContent = `${score} / ${count}`;
+  byId("percentage").textContent = `${percentage}%`;
+  byId("result").style.setProperty("--percent", `${percentage}%`);
+  byId("performance").textContent = message;
   showScreen("result");
   byId("result-title").focus();
-});
+}
 
 for (const button of document.querySelectorAll("[data-category]")) {
   button.addEventListener("click", () => startRound(categories[button.dataset.category]));

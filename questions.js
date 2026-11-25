@@ -57,10 +57,10 @@ const categories = {
         explanation: "Pressing a piano key moves a hammer that strikes the strings."
       },
       {
-        prompt: "Which line divides Earth into the Northern and Southern Hemispheres?",
-        choices: ["Prime Meridian", "Equator", "Tropic of Cancer", "Arctic Circle"],
+        prompt: "What makes a popcorn kernel burst when heated?",
+        choices: ["Its starch freezes", "Steam builds up inside the hull", "Its oil turns into sugar", "Air enters through the tip"],
         correct: 1,
-        explanation: "The equator circles Earth at zero degrees latitude."
+        explanation: "Water inside the kernel turns to steam. Pressure builds until the hull splits and the starch expands."
       },
       {
         prompt: "Which gas do plants take in to make sugars during photosynthesis?",
