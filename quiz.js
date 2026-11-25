@@ -2,6 +2,9 @@
 
 const byId = (id) => document.getElementById(id);
 const screens = ["landing", "round", "result"];
+const roundSize = 5;
+const historyInMemory = new Map();
+let roundQuestions;
 let category;
 let index;
 let score;
@@ -12,19 +15,60 @@ function showScreen(active) {
   window.scrollTo(0, 0);
 }
 
+// Deal from each category separately. A refresh resets the score, but keeps the draw history.
+function drawRound(category) {
+  const bank = category.questions;
+  const key = "cmps510-mini-quiz:draws:" + category.name;
+  let history = historyInMemory.get(key) || [];
+  try {
+    const saved = JSON.parse(localStorage.getItem(key));
+    if (Array.isArray(saved)) history = saved;
+  } catch {
+    // Storage may be unavailable when the quiz is opened as a local file.
+  }
+
+  const previousRound = new Set(history.slice(-roundSize));
+  const seen = new Set(history);
+  const round = [];
+  while (round.length < Math.min(roundSize, bank.length)) {
+    let pool = bank.filter(question => !seen.has(question.prompt));
+    if (pool.length === 0) {
+      seen.clear();
+      pool = bank;
+    }
+    // At a cycle boundary, keep the last round out of the next hand when possible.
+    const available = pool.filter(question => !round.includes(question));
+    const fresh = available.filter(question => !previousRound.has(question.prompt));
+    const candidates = fresh.length ? fresh : available;
+    const choice = candidates[Math.floor(Math.random() * candidates.length)];
+    seen.add(choice.prompt);
+    round.push(choice);
+  }
+
+  const updated = Array.from(seen);
+  historyInMemory.set(key, updated);
+  try {
+    localStorage.setItem(key, JSON.stringify(updated));
+  } catch {
+    // The in-memory copy still keeps retries varied during this visit.
+  }
+  return round;
+}
+
 function startRound(selected) {
   category = selected;
+  roundQuestions = drawRound(category);
   index = 0;
   score = 0;
   showScreen("round");
   byId("category-name").textContent = category.name;
-  byId("progress").max = category.questions.length;
+  byId("progress").max = roundQuestions.length;
   showQuestion();
 }
 
 function showQuestion() {
-  const question = category.questions[index];
-  const count = category.questions.length;
+  const question = roundQuestions[index];
+  const count = roundQuestions.length;
   answered = false;
   byId("progress").value = index;
   byId("position").textContent = `Question ${index + 1} of ${count}`;
@@ -50,7 +94,7 @@ function showQuestion() {
 function checkAnswer(selected) {
   if (answered) return;
   answered = true;
-  const question = category.questions[index];
+  const question = roundQuestions[index];
   const right = selected === question.correct;
   if (right) score += 1;
 
@@ -67,15 +111,15 @@ function checkAnswer(selected) {
   verdict.textContent = right ? "Correct!" : `Incorrect. The answer is ${question.choices[question.correct]}.`;
   byId("feedback").replaceChildren(verdict, document.createTextNode(question.explanation));
   byId("progress").value = index + 1;
-  byId("score").textContent = `Score · ${score} / ${category.questions.length}`;
-  byId("next").textContent = index + 1 === category.questions.length ? "See Final Score" : "Next Question";
+  byId("score").textContent = `Score · ${score} / ${roundQuestions.length}`;
+  byId("next").textContent = index + 1 === roundQuestions.length ? "See Final Score" : "Next Question";
   byId("next").hidden = false;
 }
 
 byId("next").addEventListener("click", () => {
   if (!answered || byId("round").hidden) return;
   index += 1;
-  if (index < category.questions.length) {
+  if (index < roundQuestions.length) {
     showQuestion();
     return;
   }
@@ -83,13 +127,13 @@ byId("next").addEventListener("click", () => {
 });
 
 function showResult() {
-  const count = category.questions.length;
+  const count = roundQuestions.length;
   const percentage = Math.round(score / count * 100);
-  let message = "Give it another go and see which explanations stuck.";
+  let message = "Try a fresh set of five and build on what you learned.";
   if (score === count) {
     message = "A clean sweep! Try the other category for a new challenge.";
   } else if (percentage >= 60) {
-    message = "You got more than half right. Try again to catch the ones you missed.";
+    message = "You got more than half right. Try five more from this category.";
   }
   byId("result-category").textContent = category.name;
   byId("total").textContent = `${score} / ${count}`;
