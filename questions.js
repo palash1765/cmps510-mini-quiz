@@ -48,13 +48,13 @@ const categories = {
         prompt: "What gives Mars its reddish color?",
         choices: ["Iron oxide", "Liquid lava", "Copper crystals", "Red algae"],
         correct: 0,
-        explanation: "Iron oxide, also called rust, colors the dust on the surface of Mars."
+        explanation: "Iron in Martian rocks and dust reacts with oxygen. The reddish iron oxides give Mars its familiar color."
       },
       {
         prompt: "Which instrument produces sound when small hammers strike its strings?",
         choices: ["Violin", "Harp", "Guitar", "Piano"],
         correct: 3,
-        explanation: "Pressing a piano key moves a hammer that strikes the strings."
+        explanation: "In an acoustic piano, pressing a key moves a hammer that strikes the strings."
       },
       {
         prompt: "What makes a popcorn kernel burst when heated?",
