@@ -148,7 +148,22 @@ for (const button of document.querySelectorAll("[data-category]")) {
   button.addEventListener("click", () => startRound(categories[button.dataset.category]));
 }
 byId("retry").addEventListener("click", () => startRound(category));
-byId("choose").addEventListener("click", () => {
+
+function returnToCategories() {
+  roundQuestions = [];
+  category = null;
+  index = 0;
+  score = 0;
+  answered = false;
   showScreen("landing");
   byId("title").focus();
+}
+
+const exitDialog = byId("exit-dialog");
+byId("exit-round").addEventListener("click", () => exitDialog.showModal());
+byId("continue-round").addEventListener("click", () => exitDialog.close());
+byId("confirm-exit").addEventListener("click", () => {
+  exitDialog.close();
+  returnToCategories();
 });
+byId("choose").addEventListener("click", returnToCategories);

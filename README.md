@@ -1,6 +1,6 @@
 # Mini Quiz
 
-Mini Quiz is the final individual project for CMPS 510. Each round draws five questions at random from a pool of 15 in the selected category. Choose **Academic** for software engineering or **General Knowledge** for a mix of science, geography, music, sports, and everyday facts. Each answer gives immediate feedback and a short explanation. A correct answer earns one point. At the end, see your score out of five and the percentage you answered correctly. Draw another five or switch categories.
+Mini Quiz is the final individual project for CMPS 510. Each round draws five questions at random from a pool of 15 in the selected category. Choose **Academic** for software engineering or **General Knowledge** for a mix of science, geography, music, sports, and everyday facts. Each answer gives immediate feedback and a short explanation. A correct answer earns one point. At the end, see your score out of five and the percentage you answered correctly. Draw another five or switch categories. During a round, **Exit Quiz** lets you return to category selection. Confirming discards the unfinished score. **Continue Quiz** keeps your place.
 
 Curious why Mars looks red? Try General Knowledge. Prefer to untangle a tricky bit of code? Start with Academic.
 

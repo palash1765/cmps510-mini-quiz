@@ -39,7 +39,19 @@
       <progress id="progress" aria-label="Questions answered"></progress>
       <h1 id="prompt" tabindex="-1"></h1>
       <div id="answers" class="answers"></div>
-      <p id="feedback" role="status" aria-atomic="true"></p><button id="next" hidden>Next Question</button>
+      <p id="feedback" role="status" aria-atomic="true"></p>
+      <div class="round-actions">
+        <button id="next" hidden>Next Question</button>
+        <button id="exit-round" aria-haspopup="dialog">Exit Quiz</button>
+      </div>
+      <dialog id="exit-dialog" aria-labelledby="exit-title" aria-describedby="exit-message">
+        <h2 id="exit-title">Exit this quiz?</h2>
+        <p id="exit-message">Your current progress will be lost.</p>
+        <div class="actions">
+          <button id="continue-round" autofocus>Continue Quiz</button>
+          <button id="confirm-exit" class="secondary">Exit Quiz</button>
+        </div>
+      </dialog>
     </section>
     <section id="result" class="panel" aria-labelledby="result-title" hidden>
       <p id="result-category" class="eyebrow"></p><h1 id="result-title" tabindex="-1">Quiz complete.</h1>

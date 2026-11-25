@@ -93,6 +93,18 @@ progress::-moz-progress-bar { background: #536b3d; }
 #feedback:not(:empty) { padding: 12px 16px; border-left: 3px solid #829568; background: #f3f5ed; }
 #feedback strong { display: block; }
 #feedback:empty { margin: 0; }
+.round-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
+#exit-round {
+  margin-inline-start: auto; background: transparent; border-color: transparent;
+  color: var(--muted); text-decoration: underline; text-underline-offset: .2em;
+}
+#exit-round:hover { color: var(--ink); background: #f0f1e9; }
+#exit-dialog {
+  width: min(24rem, calc(100% - 2rem)); padding: 24px;
+  color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+}
+#exit-dialog::backdrop { background: rgb(30 35 29 / 45%); }
+#exit-dialog p { margin: 8px 0 20px; line-height: 1.5; }
 #result { background: #f7f8ef; }
 .result-summary {
   display: flex; align-items: center; gap: 24px; padding-block: 24px;
